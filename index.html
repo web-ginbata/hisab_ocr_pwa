@@ -1,0 +1,52 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline OCR PWA</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Offline OCR PWA</h1>
+
+  <input type="file" id="imageInput" accept="image/*" capture="environment" />
+  <button onclick="runOCR()">Recognize Text</button>
+
+  <p><strong>Output:</strong></p>
+  <pre id="output"></pre>
+
+  <script src="tesseract/tesseract.min.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+
+    async function runOCR() {
+      const input = document.getElementById('imageInput');
+      const output = document.getElementById('output');
+
+      if (!input.files.length) {
+        output.textContent = "Please select an image.";
+        return;
+      }
+
+      const { createWorker } = Tesseract;
+
+      const worker = await createWorker({
+        langPath: './tesseract/',
+        logger: m => console.log(m)
+      });
+
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
+
+      const { data: { text } } = await worker.recognize(input.files[0]);
+      output.textContent = text;
+
+      await worker.terminate();
+    }
+  </script>
+</body>
+</html>
