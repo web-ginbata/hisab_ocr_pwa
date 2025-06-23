@@ -23,23 +23,20 @@
         navigator.serviceWorker.register('sw.js');
     }
 
-    function tesseractLogger(m) {
-        console.log(m);
-    }
-
     async function runOCR() {
         const input = document.getElementById('imageInput');
         const output = document.getElementById('output');
 
         if (!input.files.length) {
-            output.textContent = "Please select an image.";
-            return;
+        output.textContent = "Please select an image.";
+        return;
         }
 
         const { createWorker } = Tesseract;
 
         const worker = await createWorker({
-            langPath: './tesseract/',
+        langPath: './tesseract/',
+        gzip: false  // ✅ important: disable gzip
         });
 
         await worker.loadLanguage('eng');
@@ -47,6 +44,7 @@
 
         const { data: { text } } = await worker.recognize(input.files[0]);
         output.textContent = text;
+
         await worker.terminate();
     }
   </script>

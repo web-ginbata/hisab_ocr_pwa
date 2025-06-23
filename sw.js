@@ -1,14 +1,13 @@
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open("ocr-cache-v1").then(cache =>
+    caches.open("ocr-cache-v0").then(cache =>
       cache.addAll([
         "./",
         "./index.html",
         "./manifest.json",
         "./style.css",
-        "./script.js",
         "./tesseract/tesseract.min.js",
-        "./tesseract/eng.traineddata.gz",
+        "./tesseract/eng.traineddata",  // ✅ updated
         "./assets/logo.png"
       ])
     )
