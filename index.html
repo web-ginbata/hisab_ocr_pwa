@@ -40,15 +40,15 @@
 
         const worker = await createWorker({
             langPath: './tesseract/',
-            logger: tesseractLogger  // ✅ FIXED: no inline function
         });
 
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
 
-        const { data: { text } } = await worker.recognize(input.files[0]);
+        const { data: { text } } = await worker.recognize(input.files[0],{
+            logger: tesseractLogger,
+        });
         output.textContent = text;
-
         await worker.terminate();
     }
   </script>
