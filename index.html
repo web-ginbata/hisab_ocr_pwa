@@ -45,9 +45,7 @@
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
 
-        const { data: { text } } = await worker.recognize(input.files[0],{
-            logger: tesseractLogger,
-        });
+        const { data: { text } } = await worker.recognize(input.files[0]);
         output.textContent = text;
         await worker.terminate();
     }
