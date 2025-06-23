@@ -1,14 +1,14 @@
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open("ocr-cache-v3").then(cache =>
+    caches.open("ocr-cache-v4").then(cache =>
       cache.addAll([
         "./",
         "./index.html",
         "./manifest.json",
         "./style.css",
         "./tesseract/tesseract.min.js",
-        "./tesseract/eng.traineddata.gz", // ✅ Compressed model
         "./assets/logo.png"
+        // No need to cache eng.traineddata.gz since it's from CDN
       ])
     )
   );
